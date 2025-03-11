@@ -77,7 +77,7 @@ public final class Fields<TypeLock>: @unchecked Sendable {
         switch self.__state {
         case .decoding(let codable):
             switch codable.value {
-            case let dict as [String: Any]:
+            case let dict as [String: any Sendable]:
                 // We replce `nil` values with Void AnyCodable values for
                 // cleaner protocol declaration.
                 return try decoder(AnyCodable(dict[field]))

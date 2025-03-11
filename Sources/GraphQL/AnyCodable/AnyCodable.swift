@@ -2,21 +2,21 @@
 
 /**
  A type-erased `Codable` value.
-
+ 
  The `AnyCodable` type forwards encoding and decoding responsibilities
  to an underlying value, hiding its specific underlying type.
-
+ 
  You can encode or decode mixed-type values in dictionaries
  and other collections that require `Encodable` or `Decodable` conformance
  by declaring their contained type to be `AnyCodable`.
-
+ 
  - SeeAlso: `AnyEncodable`
  - SeeAlso: `AnyDecodable`
  */
 @frozen public struct AnyCodable: Codable, @unchecked Sendable {
     public let value: Any
-
-    public init<T>(_ value: T?) {
+    
+    public init<T: Sendable>(_ value: T?) {
         self.value = value ?? ()
     }
 }
@@ -91,37 +91,54 @@ extension AnyCodable: CustomDebugStringConvertible {
 }
 
 extension AnyCodable: ExpressibleByNilLiteral, ExpressibleByBooleanLiteral, ExpressibleByIntegerLiteral, ExpressibleByFloatLiteral, ExpressibleByStringLiteral, ExpressibleByArrayLiteral, ExpressibleByDictionaryLiteral {
-
+    
     public init(nilLiteral: ()) {
-        self.init(nil as Any?)
+        self.init(nil as Void?)
     }
-
+    
     public init(booleanLiteral value: Bool) {
         self.init(value)
     }
-
+    
     public init(integerLiteral value: Int) {
         self.init(value)
     }
-
+    
     public init(floatLiteral value: Double) {
         self.init(value)
     }
-
+    
     public init(extendedGraphemeClusterLiteral value: String) {
         self.init(value)
     }
-
+    
     public init(stringLiteral value: String) {
         self.init(value)
     }
-
-    public init(arrayLiteral elements: Any...) {
+    
+    public init(arrayLiteral elements: any Sendable...) {
         self.init(elements)
     }
+    
+    public init(dictionaryLiteral elements: (SendableAnyHashable, any Sendable)...) {
+        self.init(Dictionary<SendableAnyHashable, any Sendable>(elements, uniquingKeysWith: { (first, _) in first }))
+    }
+}
 
-    public init(dictionaryLiteral elements: (AnyHashable, Any)...) {
-        self.init(Dictionary<AnyHashable, Any>(elements, uniquingKeysWith: { (first, _) in first }))
+/// A wrapper for AnyHashable that conforms to Sendable.
+public struct SendableAnyHashable: Hashable, @unchecked Sendable {
+    let base: AnyHashable
+    
+    init<T: Sendable & Hashable>(_ value: T) {
+        self.base = AnyHashable(value)
+    }
+    
+    public static func == (lhs: SendableAnyHashable, rhs: SendableAnyHashable) -> Bool {
+        lhs.base == rhs.base
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        base.hash(into: &hasher)
     }
 }
 

@@ -20,7 +20,7 @@ extension Array: GraphQLScalar where Element: GraphQLScalar {
         switch(codable.value) {
         case let value as [AnyCodable]:
             self = try value.map { try Element(from: $0) }
-        case let value as [Any]:
+        case let value as [any Sendable]:
             // NOTE: We need this special case because wrapped scalar types (e.g. `[String]` or `String?`) are represented as a single `AnyCodable` value with a nested structure (e.g. `AnyCodable([String])`).
             self = try value.map { try Element(from: AnyCodable($0)) }
         default:

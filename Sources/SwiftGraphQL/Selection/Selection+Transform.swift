@@ -14,7 +14,7 @@ public extension Selection {
             switch fields.__state {
             case let .decoding(data):
                 switch data.value {
-                case let array as [Any]:
+                case let array as [any Sendable]:
                     return try array.map { try self.__decode(data: AnyCodable($0)) }
                 default:
                     throw ObjectDecodingError.unexpectedObjectType(expected: "Array", received: data.value)

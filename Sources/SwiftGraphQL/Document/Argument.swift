@@ -40,7 +40,7 @@ public struct Argument: Hashable, Sendable {
     // MARK: - Initializer
 
     /// Returns a new argument with the given value.
-    public init<S: Hashable>(name: String, type: String, value: S) {
+    public init<S: Sendable & Hashable>(name: String, type: String, value: S) {
         // Argument information
         self.name = name
         self.type = type
