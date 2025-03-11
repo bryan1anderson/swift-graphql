@@ -3,7 +3,7 @@ import Foundation
 import GraphQL
 
 /// Operation describes a single request that may be processed by multiple exchange along the chain.
-public struct Operation: Identifiable, Equatable, Hashable {
+public struct Operation: Identifiable, Equatable, Hashable, Sendable {
     public init(id: String, kind: Operation.Kind, request: URLRequest, policy: Operation.Policy, types: [String], args: ExecutionArgs) {
         self.id = id
         self.kind = kind
@@ -19,7 +19,7 @@ public struct Operation: Identifiable, Equatable, Hashable {
     /// Identifies the operation type.
     public var kind: Kind
     
-    public enum Kind: String {
+    public enum Kind: String, Sendable {
         case query
         case mutation
         case subscription
@@ -34,7 +34,7 @@ public struct Operation: Identifiable, Equatable, Hashable {
     /// Specifies the caching-networking mechanism that exchanges should follow.
     public var policy: Policy
     
-    public enum Policy: String {
+    public enum Policy: String, Sendable {
         
         /// Prefers cached results and falls back to sending an API request when there are no prior results.
         case cacheFirst = "cache-first"
@@ -84,7 +84,7 @@ extension Operation {
 }
 
 /// A structure describing the result of an operation execution.
-public struct OperationResult: Equatable {
+public struct OperationResult: Equatable, Sendable {
     /// Back-reference to the operation that triggered the execution.
     public var operation: Operation
     
@@ -161,7 +161,7 @@ extension OperationResult: Identifiable {
 ///
 /// - NOTE: Decoded result may include errors from invalid data even if
 ///         the response query was correct.
-public struct DecodedOperationResult<T> {
+public struct DecodedOperationResult<T: Sendable>: Sendable {
     
     /// Back-reference to the operation that triggered the execution.
     public var operation: Operation

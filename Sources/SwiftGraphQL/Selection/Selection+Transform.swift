@@ -85,7 +85,7 @@ public extension Selection {
 public extension Selection {
     
     /// Maps selection's return value into a new value using provided mapping function.
-    func map<MappedType>(_ fn: @escaping (T) -> MappedType) -> Selection<MappedType, TypeLock> {
+    func map<MappedType>(_ fn: @Sendable @escaping (T) -> MappedType) -> Selection<MappedType, TypeLock> {
         Selection<MappedType, TypeLock> { fields in
             let selection = self.__selection()
             fields.__select(selection)

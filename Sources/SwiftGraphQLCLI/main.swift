@@ -31,7 +31,7 @@ struct SwiftGraphQLCLI: ParsableCommand {
     
     // MARK: - Configuration
     
-    static var configuration = CommandConfiguration(
+    static let configuration = CommandConfiguration(
         commandName: "swift-graphql"
     )
 

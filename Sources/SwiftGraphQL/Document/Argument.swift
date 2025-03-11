@@ -7,7 +7,7 @@ import GraphQL
  We use it internally in the generated code to pass down information
  about the field and the type of the field it encodes as well as the value itself.
  */
-public struct Argument: Hashable {
+public struct Argument: Hashable, Sendable {
     let name: String
     let type: String
     let hash: String

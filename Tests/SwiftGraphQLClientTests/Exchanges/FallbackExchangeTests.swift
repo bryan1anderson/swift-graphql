@@ -3,7 +3,7 @@ import GraphQL
 @testable import SwiftGraphQLClient
 import XCTest
 
-final class FallbackExchangeTests: XCTestCase {
+@MainActor final class FallbackExchangeTests: XCTestCase {
     
     private var cancellables = Set<AnyCancellable>()
     

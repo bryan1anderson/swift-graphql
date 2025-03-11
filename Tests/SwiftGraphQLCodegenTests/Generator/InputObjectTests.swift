@@ -30,7 +30,7 @@ final class InputObjectTests: XCTestCase {
         
         generated.assertInlineSnapshot(matching: """
            extension InputObjects {
-             public struct InputObject: Encodable, Hashable {
+             public struct InputObject: Encodable, Hashable, Sendable {
 
                /// Field description.
                /// Multiline.
@@ -81,7 +81,7 @@ final class InputObjectTests: XCTestCase {
 
         generated.assertInlineSnapshot(matching: """
            extension InputObjects {
-             public struct InputObject: Encodable, Hashable {
+             public struct InputObject: Encodable, Hashable, Sendable {
            
                /// Field description.
                public var id: Enums.Enum
