@@ -7,7 +7,7 @@ import Logging
 ///
 /// - NOTE: SwiftUI bindings and Selection interloop aren't bound to the default implementation.
 ///         You may use them with a custom implementation as well.
-public class Client: GraphQLClient, ObservableObject {
+public final class Client: GraphQLClient, ObservableObject, @unchecked Sendable {
     
     /// Request to use to perform operations.
     public let request: URLRequest

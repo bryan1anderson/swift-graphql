@@ -4,7 +4,7 @@ import Logging
 
 /// Specifies the minimum requirements of a client to support the execution of queries
 /// composed using SwiftGraphQL.
-public protocol GraphQLClient {
+public protocol GraphQLClient: Sendable {
     
     /// Request to use to perform the operation.
     var request: URLRequest { get }

@@ -4,7 +4,7 @@ import Logging
 import SwiftGraphQLClient
 
 /// A client that you can use to perform tests on exchanges.
-class MockClient: GraphQLClient {
+class MockClient: GraphQLClient, @unchecked Sendable {
     var request: URLRequest
     
     private var customExecute: ((SwiftGraphQLClient.Operation) -> AnyPublisher<OperationResult, Never>)?

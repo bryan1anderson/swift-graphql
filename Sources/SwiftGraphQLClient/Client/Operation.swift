@@ -114,7 +114,7 @@ public struct OperationResult: Equatable, Sendable {
 
 
 /// An error structure describing an error that may have happened in one of the exchanges.
-public enum CombinedError: Error {
+public enum CombinedError: Error, @unchecked Sendable {
     
     /// Describes an error that occured on the networking layer.
     case network(URLError)

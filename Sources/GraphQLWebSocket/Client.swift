@@ -9,7 +9,7 @@ import Starscream
 ///
 /// - NOTE: The client assumes that you'll manually establish the socket connection
 ///         and that it may send requests.
-public class GraphQLWebSocket: WebSocketDelegate {
+public final class GraphQLWebSocket: @preconcurrency WebSocketDelegate {
     
     /// Configuration of the behaviour of the client.
     private let config: GraphQLWebSocketConfiguration
