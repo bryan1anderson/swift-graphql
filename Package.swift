@@ -6,7 +6,7 @@ let package = Package(
     name: "swift-graphql",
     platforms: [
         .iOS(.v15),
-        .macOS(.v10_15),
+        .macOS(.v12),
         .tvOS(.v13),
         .watchOS(.v6)
     ],
@@ -25,7 +25,7 @@ let package = Package(
     dependencies: [
         // .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.0.0"),
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.0.0"),
-        .package(url: "https://github.com/apple/swift-format", "508.0.0"..<"510.0.0"),
+        .package(url: "https://github.com/apple/swift-format", "508.0.0"..<"600.0.1"),
         .package(url: "https://github.com/apple/swift-log.git", from: "1.0.0"),
         .package(url: "https://github.com/daltoniam/Starscream.git", from: "4.0.5"),
         .package(url: "https://github.com/dominicegginton/Spinner", from: "2.0.0"),
@@ -69,7 +69,7 @@ let package = Package(
             dependencies: [
                 "GraphQLAST",
                 .product(name: "SwiftFormat", package: "swift-format"),
-                .product(name: "SwiftFormatConfiguration", package: "swift-format"),
+//                .product(name: "SwiftFormatConfiguration", package: "swift-format"),
                 "SwiftGraphQLUtils"
             ],
             path: "Sources/SwiftGraphQLCodegen"
