@@ -120,27 +120,15 @@ extension AnyCodable: ExpressibleByNilLiteral, ExpressibleByBooleanLiteral, Expr
         self.init(elements)
     }
     
-    public init(dictionaryLiteral elements: (SendableAnyHashable, any Sendable)...) {
-        self.init(Dictionary<SendableAnyHashable, any Sendable>(elements, uniquingKeysWith: { (first, _) in first }))
+    public init<T: HashSendable>(dictionaryLiteral elements: (T, any Sendable)...) {
+        self.init(Dictionary<T, any Sendable>(elements, uniquingKeysWith: { (first, _) in first }))
     }
+    
+    
 }
 
-/// A wrapper for AnyHashable that conforms to Sendable.
-public struct SendableAnyHashable: Hashable, @unchecked Sendable {
-    let base: AnyHashable
-    
-    init<T: Sendable & Hashable>(_ value: T) {
-        self.base = AnyHashable(value)
-    }
-    
-    public static func == (lhs: SendableAnyHashable, rhs: SendableAnyHashable) -> Bool {
-        lhs.base == rhs.base
-    }
-    
-    public func hash(into hasher: inout Hasher) {
-        base.hash(into: &hasher)
-    }
-}
+public typealias HashSendable = Hashable & Sendable
+
 
 
 extension AnyCodable: Hashable {
