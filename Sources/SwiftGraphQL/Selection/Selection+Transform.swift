@@ -14,7 +14,7 @@ public extension Selection {
             switch fields.__state {
             case let .decoding(data):
                 switch data.value {
-                case let array as [Any]:
+                case let array as [any Sendable]:
                     return try array.map { try self.__decode(data: AnyCodable($0)) }
                 default:
                     throw ObjectDecodingError.unexpectedObjectType(expected: "Array", received: data.value)
@@ -85,7 +85,7 @@ public extension Selection {
 public extension Selection {
     
     /// Maps selection's return value into a new value using provided mapping function.
-    func map<MappedType>(_ fn: @escaping (T) -> MappedType) -> Selection<MappedType, TypeLock> {
+    func map<MappedType>(_ fn: @Sendable @escaping (T) -> MappedType) -> Selection<MappedType, TypeLock> {
         Selection<MappedType, TypeLock> { fields in
             let selection = self.__selection()
             fields.__select(selection)

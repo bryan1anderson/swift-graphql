@@ -11,7 +11,7 @@ import SwiftGraphQLUtils
 extension InterfaceType: Structure {}
 
 extension InterfaceType {
-    
+
     /// Returns a code that represents an interface.
     ///
     /// - parameter objects: List of all objects in the schema.
@@ -20,19 +20,19 @@ extension InterfaceType {
         let fields = try self.fields.getDynamicSelections(parent: self.name, context: context)
 
         return """
-        extension Interfaces {
-            public struct \(name) {}
-        }
+            extension Interfaces {
+                public struct \(name): Sendable {}
+            }
 
-        extension Fields where TypeLock == Interfaces.\(name) {
-        \(fields)
-        }
+            extension Fields where TypeLock == Interfaces.\(name) {
+            \(fields)
+            }
 
-        \(possibleTypes.selection(name: "Interfaces.\(name)", objects: objects))
+            \(possibleTypes.selection(name: "Interfaces.\(name)", objects: objects))
 
-        extension Selection where T == Never, TypeLock == Never {
-            public typealias \(name)<W> = Selection<W, Interfaces.\(name)>
-        }
-        """
+            extension Selection where T == Never, TypeLock == Never {
+                public typealias \(name)<W> = Selection<W, Interfaces.\(name)>
+            }
+            """
     }
 }

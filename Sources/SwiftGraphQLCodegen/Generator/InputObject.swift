@@ -10,7 +10,7 @@ extension InputObjectType {
     func declaration(context: Context) throws -> String {
         return """
         extension InputObjects {
-            public struct \(self.name.pascalCase): Encodable, Hashable {
+            public struct \(self.name.pascalCase): Encodable, Hashable, Sendable {
         
             \(try self.inputFields.map { try $0.declaration(context: context) }.joined(separator: "\n"))
         

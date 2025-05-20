@@ -2,7 +2,7 @@ import Foundation
 import GraphQL
 
 /// Protocol that a custom scalar should implement to be used with SwiftGraphQL.
-public protocol GraphQLScalar: Encodable {
+public protocol GraphQLScalar: Encodable, Sendable {
     
     /// A decoder from the any-type codable value.
     init(from: AnyCodable) throws
@@ -20,7 +20,7 @@ extension Array: GraphQLScalar where Element: GraphQLScalar {
         switch(codable.value) {
         case let value as [AnyCodable]:
             self = try value.map { try Element(from: $0) }
-        case let value as [Any]:
+        case let value as [any Sendable]:
             // NOTE: We need this special case because wrapped scalar types (e.g. `[String]` or `String?`) are represented as a single `AnyCodable` value with a nested structure (e.g. `AnyCodable([String])`).
             self = try value.map { try Element(from: AnyCodable($0)) }
         default:
@@ -185,7 +185,7 @@ extension AnyCodable: GraphQLScalar {
 
 // MARK: - Error
 
-public enum ScalarDecodingError: Error {
+public enum ScalarDecodingError: Error, @unchecked Sendable {
     
     /// Scalar expected a given type but received a value of a different type.
     case unexpectedScalarType(expected: String, received: Any)

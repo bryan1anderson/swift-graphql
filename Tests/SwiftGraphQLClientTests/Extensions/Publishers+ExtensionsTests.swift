@@ -2,7 +2,7 @@ import Combine
 @testable import SwiftGraphQLClient
 import XCTest
 
-final class PublishersExtensionsTests: XCTestCase {
+@MainActor final class PublishersExtensionsTests: XCTestCase {
     
     var cancellables = Set<AnyCancellable>()
 
@@ -129,7 +129,7 @@ final class PublishersExtensionsTests: XCTestCase {
         XCTAssertEqual(value, 1)
     }
 
-    func testThrowEmittedErrorAsynchronously() async throws {
+    nonisolated func testThrowEmittedErrorAsynchronously() async throws {
         struct TestError: Error {}
 
         await XCTAssertThrowsError(of: TestError.self) {

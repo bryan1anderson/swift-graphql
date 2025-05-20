@@ -3,7 +3,7 @@ import GraphQL
 @testable import SwiftGraphQLClient
 import XCTest
 
-final class FetchExchangeTests: XCTestCase {
+@MainActor final class FetchExchangeTests: XCTestCase {
     struct MockURLSession: FetchSession {
         
         /// Mock handler used to create a mock data response of the request.

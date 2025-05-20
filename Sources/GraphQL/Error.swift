@@ -3,7 +3,7 @@ import Foundation
 /// A GraphQLError describes an Error found during the parse, validate, or execute phases of performing a GraphQL operation. In addition to a message and stack trace, it also includes information about the locations in a GraphQL document and/or execution result that correspond to the Error.
 ///
 /// Its implementation follows the specification described at [GraphQLSpec](http://spec.graphql.org/October2021/#sec-Errors.Error-result-format).
-public struct GraphQLError: Codable, Equatable {
+public struct GraphQLError: Codable, Equatable, Sendable {
     
     /// A short, human-readable summary of the problem.
     public let message: String

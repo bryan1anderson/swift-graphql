@@ -6,7 +6,7 @@ import XCTest
 
 
 @available(macOS 12, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-final class ClientTests: XCTestCase {
+@MainActor final class ClientTests: XCTestCase {
     
     private var cancellables = Set<AnyCancellable>()
     

@@ -9,7 +9,7 @@ extension EnumType {
         """
         extension Enums {
             \(docs)
-            public enum \(name.pascalCase): String, CaseIterable, Codable {
+            public enum \(name.pascalCase): String, CaseIterable, Codable, Sendable {
             \(values)
             }
         }
@@ -58,7 +58,7 @@ extension EnumType {
     /// Mock value declaration.
     private var mock: String {
         let value = self.enumValues.first!
-        return "public static var mockValue = Self.\(value.name.camelCasePreservingSurroundingUnderscores.normalize)"
+        return "public static let mockValue = Self.\(value.name.camelCasePreservingSurroundingUnderscores.normalize)"
     }
 }
 

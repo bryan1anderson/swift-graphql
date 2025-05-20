@@ -3,7 +3,7 @@ import Foundation
 /// The structure holding parameters for a GraphQL request.
 ///
 /// ExecutionArgs contains fields in the [GraphQL over HTTP spec](https://github.com/graphql/graphql-over-http/blob/main/spec/GraphQLOverHTTP.md#request-parameters) and [GraphQL over WebSocket](https://github.com/enisdenjo/graphql-ws/blob/master/PROTOCOL.md#subscribe) spec.
-public struct ExecutionArgs: Codable, Equatable {
+public struct ExecutionArgs: Codable, Equatable, Sendable {
     
     /// A Document containing GraphQL Operations and Fragments to execute.
     public var query: String

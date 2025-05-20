@@ -3,7 +3,7 @@ import GraphQLAST
 
 /// Structure that holds methods for SwiftGraphQL query-builder generation.
 public struct GraphQLCodegen {
-    
+
     /// Map of supported scalars.
     private let scalars: ScalarMap
 
@@ -14,7 +14,7 @@ public struct GraphQLCodegen {
     }
 
     // MARK: - Methods
-    
+
     /// Generates Swift files for the graph selections
     /// - Parameters:
     ///   - schema: The GraphQL schema
@@ -23,7 +23,7 @@ public struct GraphQLCodegen {
     /// - Returns: A list of generated files
     public func generate(schema: Schema, generateStaticFields: Bool, singleFile: Bool = false) throws -> [GeneratedFile] {
         let context = Context(schema: schema, scalars: self.scalars)
-        
+
         let subscription = schema.operations.first { $0.isSubscription }?.type.name
         let objects = schema.objects
         let operations = schema.operations.map { $0.declaration() }
@@ -31,29 +31,29 @@ public struct GraphQLCodegen {
         var files: [GeneratedFile] = []
 
         let header = """
-        // This file was auto-generated using maticzav/swift-graphql. DO NOT EDIT MANUALLY!
-        import Foundation
-        import GraphQL
-        import SwiftGraphQL
-        """
+            // This file was auto-generated using maticzav/swift-graphql. DO NOT EDIT MANUALLY!
+            import Foundation
+            import GraphQL
+            import SwiftGraphQL
+            """
 
         let graphContents = """
-        public enum Operations {}
-        \(operations.lines)
+            public enum Operations {}
+            \(operations.lines)
 
-        public enum Objects {}
+            public enum Objects {}
 
-        public enum Interfaces {}
+            public enum Interfaces {}
 
-        public enum Unions {}
+            public enum Unions {}
 
-        public enum Enums {}
+            public enum Enums {}
 
-        /// Utility pointer to InputObjects.
-        public typealias Inputs = InputObjects
-        
-        public enum InputObjects {}
-        """
+            /// Utility pointer to InputObjects.
+            public typealias Inputs = InputObjects
+
+            public enum InputObjects {}
+            """
 
         func addFile(name: String, contents: String) throws {
             let fileContents: String
