@@ -29,6 +29,11 @@ jobs:
           # Credentials
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Debug tag_version output
+        run: |
+          echo "new_tag: ${{ steps.tag_version.outputs.new_tag }}"
+          echo "new_version: ${{ steps.tag_version.outputs.new_version }}"
+
       - name: Create a GitHub release
         uses: actions/create-release@v1
         env:
