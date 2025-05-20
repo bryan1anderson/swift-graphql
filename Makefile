@@ -27,5 +27,6 @@ update_podspec:
 	sed -i '' "s|\(version .* = '\)\(.*\)\('\)|\1$(VERSION)\3|" SwiftGraphQL.podspec
 
 update_brew_formula:
+	sed -i '' 's|version ".*"|version "$(VERSION)"|' Formula/SwiftGraphQL.rb
 	sed -i '' 's|\(url ".*/archive/\)\(.*\)\(.tar\)|\1$(VERSION)\3|' Formula/SwiftGraphQL.rb
 	sed -i '' 's|\(sha256 "\)\(.*\)\("\)|\1$(SHA)\3|' Formula/SwiftGraphQL.rb
