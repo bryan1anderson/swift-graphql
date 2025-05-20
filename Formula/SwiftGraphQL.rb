@@ -2,9 +2,10 @@ class Swiftgraphql < Formula
   desc "Code generator for SwiftGraphQL library"
   homepage "https://swift-graphql.org"
   license "MIT"
-  version "5.1.2"
+  version "6.0.1"
   
-  url "file:///Users/bryananderson/Developer/Forks/swift-graphql", :using => :git, :branch => "swift-6-concurrency"
+  url "https://github.com/bryan1anderson/swift-graphql/archive/refs/tags/6.0.1.tar.gz"
+  sha256 "PUT_SHA256_HERE"
   
   depends_on :xcode
   uses_from_macos "libxml2"

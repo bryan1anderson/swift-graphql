@@ -19,7 +19,7 @@ install: build
 uninstall:
 	rm -f $(INSTALL_PATH)
 
-REPO = https://github.com/maticzav/$(TOOL_NAME)
+REPO = https://github.com/bryan1anderson/$(TOOL_NAME)
 RELEASE_TAR = $(REPO)/archive/$(VERSION).tar.gz
 SHA = $(shell curl -L -s $(RELEASE_TAR) | shasum -a 256 | sed 's/ .*//')
 
@@ -27,5 +27,5 @@ update_podspec:
 	sed -i '' "s|\(version .* = '\)\(.*\)\('\)|\1$(VERSION)\3|" SwiftGraphQL.podspec
 
 update_brew_formula:
-	sed -i '' 's|\(url ".*/archive/\)\(.*\)\(.tar\)|\1$(VERSION)\3|' Formula/swiftgraphql.rb
-	sed -i '' 's|\(sha256 "\)\(.*\)\("\)|\1$(SHA)\3|' Formula/swiftgraphql.rb
+	sed -i '' 's|\(url ".*/archive/\)\(.*\)\(.tar\)|\1$(VERSION)\3|' Formula/SwiftGraphQL.rb
+	sed -i '' 's|\(sha256 "\)\(.*\)\("\)|\1$(SHA)\3|' Formula/SwiftGraphQL.rb
