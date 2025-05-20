@@ -9,7 +9,7 @@ import GraphQLWebSocket
 ///
 /// - NOTE: By default WebSocketExchange only handles subscription operations
 ///         but you may configure it to handle all operations equally.
-public class WebSocketExchange: Exchange {
+public class WebSocketExchange: @preconcurrency Exchange {
     
     /// Reference to the client that actually establishes the WebSocket connection with the server.
     private var client: GraphQLWebSocket

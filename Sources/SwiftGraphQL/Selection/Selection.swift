@@ -3,25 +3,35 @@ import GraphQL
 
 /// Fields is a class that selection passes around to collect information about the selection
 /// of a query and also aids the decoding process.
-public final class Fields<TypeLock> {
-    
+public final class Fields<TypeLock>: @unchecked Sendable {
+
     // Internal representation of selection.
-    private(set) var fields = [GraphQLField]()
-    
+    private let queue = DispatchQueue(label: "com.swiftgraphql.fields")
+    private var _fields = [GraphQLField]()
+
+    var fields: [GraphQLField] {
+        get { queue.sync { _fields } }
+        set { queue.sync { _fields = newValue } }
+    }
+
     /// State of the selection tells whether we are currently building up the query and mocking the
     /// response values or performing decoding with returned data.
     ///
     /// - NOTE: This variable should only be used by the generated code.
-    public private(set) var __state: State = .selecting
-    
+    private var _state: State = .selecting
+    public var __state: State {
+        get { queue.sync { _state } }
+        set { queue.sync { _state = newValue } }
+    }
+
     public enum State {
-        
+
         /// Selection is collection data about the query.
         case selecting
-        
+
         /// Selection is trying to parse the received data into a desired value.
         case decoding(AnyCodable)
-        
+
         /// Tells whether the fields have actual data or not.
         public var isMocking: Bool {
             switch self {
@@ -57,9 +67,9 @@ public final class Fields<TypeLock> {
     public func __select(_ fields: [GraphQLField]) {
         self.fields.append(contentsOf: fields)
     }
-    
+
     // MARK: - Decoding
-    
+
     /// Tries to decode a field from an object selection.
     ///
     /// - NOTE: This function should only be used by the generated code!
@@ -67,7 +77,7 @@ public final class Fields<TypeLock> {
         switch self.__state {
         case .decoding(let codable):
             switch codable.value {
-            case let dict as [String: Any]:
+            case let dict as [String: any Sendable]:
                 // We replce `nil` values with Void AnyCodable values for
                 // cleaner protocol declaration.
                 return try decoder(AnyCodable(dict[field]))
@@ -81,9 +91,9 @@ public final class Fields<TypeLock> {
             throw ObjectDecodingError.decodingWhileSelecting
         }
     }
-    
+
     // MARK: - Analysis
-    
+
     /// Returns all types referenced in the fields.
     var types: [String] {
         self.fields.flatMap { $0.types }.unique(by: { $0 })
@@ -96,15 +106,15 @@ public final class Fields<TypeLock> {
 /// fields a query should fetch. To do that, it passes around a Fields
 /// class reference. Generated code later calls `select` method on Fields
 /// to add a subfield to the selection.
-public struct Selection<T, TypeLock> {
-    
+public struct Selection<T: Sendable, TypeLock: Sendable>: Sendable {
+
     /// Function that SwiftGraphQL uses to generate selection and convert received JSON
     /// structure into concrete Swift structure.
-    private var decoder: (Fields<TypeLock>) throws -> T
-    
+    private var decoder: @Sendable (Fields<TypeLock>) throws -> T
+
     // MARK: - Initializer
-    
-    public init(decoder: @escaping (Fields<TypeLock>) throws -> T) {
+
+    public init(decoder: @Sendable @escaping (Fields<TypeLock>) throws -> T) {
         self.decoder = decoder
     }
 
@@ -115,14 +125,14 @@ public struct Selection<T, TypeLock> {
     /// - NOTE: This is an internal function that should only be used by the generated code.
     public func __selection() -> [GraphQLField] {
         let fields = Fields<TypeLock>()
-        
+
         do {
             _ = try decoder(fields)
         } catch {}
-        
+
         return fields.fields
     }
-    
+
     /// Returns all types referenced in the selection.
     public var types: Set<String> {
         self.__selection().map { $0.types }.reduce(Set(), { $0.union($1) })
@@ -136,7 +146,7 @@ public struct Selection<T, TypeLock> {
     public func __decode(data: AnyCodable) throws -> T {
         // Construct a copy of the selection set, and use the new selection set to decode data.
         let fields = Fields<TypeLock>(data: data)
-        
+
         let data = try self.decoder(fields)
         return data
     }
@@ -152,7 +162,7 @@ public struct Selection<T, TypeLock> {
 
 // MARK: - Error
 
-public enum ObjectDecodingError: Error, Equatable {
+public enum ObjectDecodingError: Error, Equatable, @unchecked Sendable {
     public static func == (lhs: ObjectDecodingError, rhs: ObjectDecodingError) -> Bool {
         switch (lhs, rhs) {
         case (.unexpectedNilValue, .unexpectedNilValue):

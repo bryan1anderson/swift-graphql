@@ -2,7 +2,7 @@
 import XCTest
 
 /// Tests the serialization of the query from the AST.
-final class HTTPTests: XCTestCase {
+@MainActor final class HTTPTests: XCTestCase {
     
     /// Tests basic HTTP query performed against a server.
     func testHTTPQuery() throws {

@@ -9,7 +9,7 @@ public protocol GraphQLOperation {
     static var operation: GraphQLOperationKind { get }
 }
 
-public enum GraphQLOperationKind: String {
+public enum GraphQLOperationKind: String, Sendable {
     case query
     case mutation
     case subscription

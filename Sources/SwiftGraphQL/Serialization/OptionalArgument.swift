@@ -5,14 +5,14 @@ import GraphQL
 ///
 /// To prevent encoding of absent values we use a the OptionalArgumentProtocol
 /// in document parsing to figure out whether we should encode or skip the argument.
-protocol OptionalArgumentProtocol {
+protocol OptionalArgumentProtocol: Sendable {
     
     /// Tells whether an optional argument has a value.
     var hasValue: Bool { get }
 }
 
 /// OptionalArgument is a utility structure used to represent possibly absent values.
-public struct OptionalArgument<T>: OptionalArgumentProtocol {
+public struct OptionalArgument<T: Sendable>: OptionalArgumentProtocol {
     
     /// Special structure that allows recursive type references.
     ///

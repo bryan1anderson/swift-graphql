@@ -3,7 +3,7 @@ import GraphQL
 @testable import SwiftGraphQLClient
 import XCTest
 
-final class ComposeExchangeTests: XCTestCase {
+@MainActor final class ComposeExchangeTests: XCTestCase {
     
     private struct DebugExchange: Exchange {
         

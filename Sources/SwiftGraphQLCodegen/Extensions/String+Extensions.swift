@@ -1,6 +1,5 @@
 import Foundation
 import SwiftFormat
-import SwiftFormatConfiguration
 
 extension String {
     /// Formats the given Swift source code.
@@ -17,7 +16,7 @@ extension String {
         var output = ""
         
         do {
-            try formatter.format(source: trimmed, assumingFileURL: nil, to: &output)
+            try formatter.format(source: trimmed, assumingFileURL: nil, selection: .infinite, to: &output)
         } catch(let err) {
             throw CodegenError.formatting(err)
         }

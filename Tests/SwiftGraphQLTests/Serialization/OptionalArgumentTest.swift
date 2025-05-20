@@ -1,11 +1,11 @@
 @testable import SwiftGraphQL
 import XCTest
 
-final class OptionalArgumentTests: XCTestCase {
+@MainActor final class OptionalArgumentTests: XCTestCase {
     // MARK: - Recursive types
 
     func testRecursiveOptionalType() {
-        struct Person {
+        struct Person: Sendable {
             var name: String
             var friends: OptionalArgument<Person>
         }

@@ -5,7 +5,7 @@ import SwiftGraphQLUtils
 /// what the selection should be and what the selected types are.
 ///
 /// - NOTE: `interface` field in the `fragment` field may be a union or an interface.
-public enum GraphQLField {
+public enum GraphQLField: Sendable {
     public typealias SelectionSet = [GraphQLField]
 
     /// Composite field describes a selection on an object an union or an interface.

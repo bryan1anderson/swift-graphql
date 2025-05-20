@@ -7,7 +7,7 @@ import GraphQL
  We use it internally in the generated code to pass down information
  about the field and the type of the field it encodes as well as the value itself.
  */
-public struct Argument: Hashable {
+public struct Argument: Hashable, Sendable {
     let name: String
     let type: String
     let hash: String
@@ -40,7 +40,7 @@ public struct Argument: Hashable {
     // MARK: - Initializer
 
     /// Returns a new argument with the given value.
-    public init<S: Hashable>(name: String, type: String, value: S) {
+    public init<S: Sendable & Hashable>(name: String, type: String, value: S) {
         // Argument information
         self.name = name
         self.type = type

@@ -1302,6 +1302,10 @@ extension Fields where TypeLock == Unions.SearchResult {
   }
 }
 
+extension Never: Sendable {
+    
+}
+
 extension Selection where TypeLock == Never, T == Never {
   typealias SearchResult<W> = Selection<W, Unions.SearchResult>
 }
@@ -1356,7 +1360,7 @@ extension Selection where TypeLock == Never, T == Never {
 enum Enums {}
 extension Enums {
   /// Item
-  enum Item: String, CaseIterable, Codable {
+    enum Item: String, CaseIterable, Codable, Sendable {
 
     case character = "CHARACTER"
 
@@ -1381,7 +1385,7 @@ extension Enums.Item: GraphQLScalar {
     }
   }
 
-  static var mockValue = Self.character
+  static let mockValue = Self.character
 }
 
 // MARK: - Input Objects
@@ -1391,7 +1395,7 @@ typealias Inputs = InputObjects
 
 enum InputObjects {}
 extension InputObjects {
-  struct Pagination: Encodable, Hashable {
+    struct Pagination: Encodable, Hashable, Sendable {
 
     var offset: OptionalArgument<Int> = .init()
     /// Number of items in a list that should be returned.
@@ -1411,7 +1415,7 @@ extension InputObjects {
   }
 }
 extension InputObjects {
-  struct Search: Encodable, Hashable {
+    struct Search: Encodable, Hashable, Sendable {
 
     /// String used to compare the name of the item to.
     var query: String

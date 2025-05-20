@@ -5,9 +5,9 @@ import Foundation
 public struct ErrorExchange: Exchange {
     
     /// Callback function that the exchange calls for every error in the operation result.
-    private var onError: (CombinedError, Operation) -> Void
+    private var onError: @Sendable (CombinedError, Operation) -> Void
     
-    public init(onError: @escaping (CombinedError, Operation) -> Void) {
+    public init(onError: @Sendable @escaping (CombinedError, Operation) -> Void) {
         self.onError = onError
     }
     

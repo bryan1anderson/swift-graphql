@@ -6,7 +6,7 @@ import GraphQL
 ///
 /// You should place this exchange before the asynchronous exchanges that perform requests
 /// (e.g. `FetchExchange`) so that the opeartion is modified before being sent.
-public struct ExtensionsExchange: Exchange {
+public struct ExtensionsExchange: @preconcurrency Exchange {
     
     /// Getter function called to get the extensions of an operation.
     private var getExtensions: (Operation) -> [String: AnyCodable]?
