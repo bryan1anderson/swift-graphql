@@ -5,7 +5,7 @@ class Swiftgraphql < Formula
   version "6.0.3"
   
   url "https://github.com/bryan1anderson/swift-graphql/archive/refs/tags/6.0.3.tar.gz"
-  sha256 "2510d795cc04862148abd99f4962cabf361019332a4254590ee43da8cf3e1611"
+  sha256 "91dffe4d4ed1a89c6fef86ce5e28434fcaf83a1f4505728af6d025c8a8312516"
   
   depends_on :xcode
   uses_from_macos "libxml2"
