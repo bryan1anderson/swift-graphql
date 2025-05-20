@@ -57,6 +57,4 @@ jobs:
           title: Update Formula and PodSpec to ${{ steps.tag_version.outputs.new_version }}
           body: 'This PR updates the referenced versions of the formula and podspec to the latest version.'
           author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
-          update-existing-pr: true
-
         if: steps.tag_version.outputs.new_tag != null
