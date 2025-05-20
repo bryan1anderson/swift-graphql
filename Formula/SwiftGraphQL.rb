@@ -12,8 +12,7 @@ class Swiftgraphql < Formula
   uses_from_macos "swift"
 
   def install
-    system "swift", "build", "-c", "release", "--product", "swift-graphql"
-    bin.install ".build/release/swift-graphql"
+    system "make", "install", "PREFIX=#{prefix}"
   end
 
   test do
