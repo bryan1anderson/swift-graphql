@@ -6,12 +6,20 @@ import GraphQL
 public final class Fields<TypeLock>: @unchecked Sendable {
 
     // Internal representation of selection.
-    private let queue = DispatchQueue(label: "com.swiftgraphql.fields")
+    private let lock = NSLock()
     private var _fields = [GraphQLField]()
 
     var fields: [GraphQLField] {
-        get { queue.sync { _fields } }
-        set { queue.sync { _fields = newValue } }
+        get {
+            lock.lock()
+            defer { lock.unlock() }
+            return _fields
+        }
+        set {
+            lock.lock()
+            defer { lock.unlock() }
+            _fields = newValue
+        }
     }
 
     /// State of the selection tells whether we are currently building up the query and mocking the
@@ -20,8 +28,16 @@ public final class Fields<TypeLock>: @unchecked Sendable {
     /// - NOTE: This variable should only be used by the generated code.
     private var _state: State = .selecting
     public var __state: State {
-        get { queue.sync { _state } }
-        set { queue.sync { _state = newValue } }
+        get {
+            lock.lock()
+            defer { lock.unlock() }
+            return _state
+        }
+        set {
+            lock.lock()
+            defer { lock.unlock() }
+            _state = newValue
+        }
     }
 
     public enum State {
@@ -58,14 +74,18 @@ public final class Fields<TypeLock>: @unchecked Sendable {
     ///
     /// - NOTE: This function should only be used by the generated code.
     public func __select(_ field: GraphQLField) {
-        fields.append(field)
+        lock.lock()
+        _fields.append(field)
+        lock.unlock()
     }
 
     /// Lets generated code add a selection to the selection set.
     ///
     /// - NOTE: This function should only be used by the generated code!
     public func __select(_ fields: [GraphQLField]) {
-        self.fields.append(contentsOf: fields)
+        lock.lock()
+        _fields.append(contentsOf: fields)
+        lock.unlock()
     }
 
     // MARK: - Decoding
