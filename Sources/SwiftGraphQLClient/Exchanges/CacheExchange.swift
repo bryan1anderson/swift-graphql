@@ -106,7 +106,9 @@ public class CacheExchange: Exchange, @unchecked Sendable {
             forwardedOps
             .handleEvents(receiveOutput: { [weak self] result in
                 guard let self = self else { return }
-                self.queue.sync {
+                let operationsToReexecute: [Operation] = self.queue.sync {
+                    var operationsToReexecute = [Operation]()
+
                     // Invalidate the cache given a mutation's response.
                     if result.operation.kind == .mutation {
                         var pendingOperations = Set<String>()
@@ -122,11 +124,11 @@ public class CacheExchange: Exchange, @unchecked Sendable {
                         // Invalidate all operations that need invalidation.
                         for opid in pendingOperations {
                             guard let cachedResult = self.resultCache[opid] else {
-                                return
+                                continue
                             }
 
                             self.resultCache.removeValue(forKey: opid)
-                            client.reexecute(operation: cachedResult.operation.with(policy: .networkOnly))
+                            operationsToReexecute.append(cachedResult.operation.with(policy: .networkOnly))
                         }
                     }
 
@@ -146,6 +148,12 @@ public class CacheExchange: Exchange, @unchecked Sendable {
                             self.operationCache[typename]!.insert(result.operation.id)
                         }
                     }
+
+                    return operationsToReexecute
+                }
+
+                for operationToReexecute in operationsToReexecute {
+                    client.reexecute(operation: operationToReexecute)
                 }
             })
             .eraseToAnyPublisher()
